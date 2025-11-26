@@ -9,12 +9,13 @@ import { colors } from '../theme/colors';
 import DriversDashboardScreen from '../screens/drivers/DriversDashboardScreen';
 import InsuranceDashboardScreen from '../screens/insurance/InsuranceDashboardScreen';
 import ManufacturersDashboardScreen from '../screens/manufacturers/ManufacturersDashboardScreen';
-
+import LiveTelemetryScreen from '../screens/telemetry/LiveTelemetryScreen';
 
 export type RootTabParamList = {
   Drivers: undefined;
   Insurance: undefined;
   Manufacturers: undefined;
+  LiveTelemetry: undefined;
 };
 
 const Tab = createBottomTabNavigator<RootTabParamList>();
@@ -48,7 +49,7 @@ const RootNavigator: React.FC = () => {
             if (route.name === 'Drivers') iconName = 'speedometer-outline';
             if (route.name === 'Insurance') iconName = 'shield-checkmark-outline';
             if (route.name === 'Manufacturers') iconName = 'car-sport-outline';
-
+            if (route.name === 'LiveTelemetry') iconName = 'pulse-outline';
             return <Ionicons name={iconName} size={size} color={color} />;
           },
         })}
@@ -56,6 +57,7 @@ const RootNavigator: React.FC = () => {
         <Tab.Screen name="Drivers" component={DriversDashboardScreen} />
         <Tab.Screen name="Insurance" component={InsuranceDashboardScreen} />
         <Tab.Screen name="Manufacturers" component={ManufacturersDashboardScreen} />
+        <Tab.Screen name="LiveTelemetry" component={LiveTelemetryScreen} />
       </Tab.Navigator>
     </NavigationContainer>
   );
