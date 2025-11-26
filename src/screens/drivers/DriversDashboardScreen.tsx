@@ -6,6 +6,7 @@ import {
   StyleSheet,
   ScrollView,
   Dimensions,
+  Button,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Card from '../../components/common/Card';
@@ -18,6 +19,7 @@ import {
   weeklyStats,
   leaderboard,
 } from '../../data/mockDriverData';
+import { TelemetryManager } from '../../telemetry/TelemetryManager';
 
 const { width } = Dimensions.get('window');
 
@@ -179,10 +181,21 @@ const DriversDashboardScreen: React.FC = () => {
               Gamified: scores are calculated on the backend using ECU + sensor data.
             </Text>
           </Card>
+
         </View>
+        {/*dummy button */}
+        <Button
+  title="Print Telemetry Packet"
+  onPress={() => {
+    const packet = TelemetryManager.getTelemetryPacket();
+    console.log(JSON.stringify(packet, null, 2));
+  }}
+/>
 
         {/* Spacer */}
         <View style={{ height: spacing.xxl }} />
+
+
       </ScrollView>
     </SafeAreaView>
   );

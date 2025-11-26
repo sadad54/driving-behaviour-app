@@ -1,7 +1,7 @@
 // src/data/mockDriverData.ts
 
 export const driverProfile = {
-  name: 'Azka',
+  name: 'Adnan',
   level: 7,
   xp: 4200,
   nextLevelXp: 5000,
@@ -30,7 +30,7 @@ export const weeklyStats = {
 
 export const leaderboard = [
   { rank: 1, name: 'Aisyah', score: 94 },
-  { rank: 2, name: 'Azka', score: 92 },
+  { rank: 2, name: 'Adnan', score: 92 },
   { rank: 3, name: 'Hafiz', score: 89 },
   { rank: 4, name: 'Zara', score: 87 },
   { rank: 5, name: 'Imran', score: 85 },

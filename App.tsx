@@ -1,15 +1,20 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import RootNavigator from './src/navigation/RootNavigator';
 import {colors} from './src/theme/colors';
+import { AppProvider } from './src/state/AppContext';
+import { SensorsManager } from './src/sensors/SensorsManager';
 
-const App: React.FC = () => {
+const App = () => {
+  useEffect(() => {
+  SensorsManager.getInstance().initialize();
+}, []);
   return (
-    <SafeAreaProvider>
+    <AppProvider><SafeAreaProvider>
       <StatusBar style="light" backgroundColor={colors.background} />
       <RootNavigator />
-    </SafeAreaProvider>
+    </SafeAreaProvider></AppProvider>
   );
 };
 export default App;
