@@ -10,6 +10,12 @@ export const driverProfile = {
   aggressionScore: 18,
 };
 
+export const scores = {
+  eco: driverProfile.ecoScore,
+  safety: driverProfile.safetyScore,
+  aggression: driverProfile.aggressionScore,
+};
+
 export const currentTrip = {
   id: 'TRIP-2025-11-26-001',
   startTime: '08:15',

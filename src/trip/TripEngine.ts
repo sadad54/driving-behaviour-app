@@ -1,10 +1,15 @@
+import { TripStorage } from '../storage/TripStorage';
 import { TelemetryManager } from '../telemetry/TelemetryManager';
+import { TripUploader } from '../upload/TripUploader';
 import { TripSession } from './TripSession';
 import {
   detectHarshBraking,
   detectRapidAcceleration,
   detectSharpTurn,
 } from './eventDetection';
+import { ScoringEngine } from '../gamification/ScoringEngine';
+import { XpEngine } from '../gamification/XpEngine';
+import { BadgesEngine } from '../gamification/BadgesEngine';
 
 export class TripEngine {
   private static instance: TripEngine;
@@ -78,15 +83,38 @@ export class TripEngine {
     }
   }
 
-  private endTrip() {
-    if (!this.currentTrip) return;
+private async endTrip() {
+  if (!this.currentTrip) return;
 
-    this.currentTrip.end();
-    console.log("Trip ended", this.currentTrip);
-    // TODO: send trip data to backend here
+  this.currentTrip.end();
 
-    // Reset
-    this.currentTrip = null;
-    this.stationaryCount = 0;
-  }
+  const tripData = {
+    startedAt: this.currentTrip.startedAt,
+    endedAt: this.currentTrip.endedAt!,
+    distanceKm: this.currentTrip.distanceKm,
+    avgSpeed: this.currentTrip.avgSpeed,
+    hardBrakes: this.currentTrip.hardBrakes,
+    rapidAccelerations: this.currentTrip.rapidAccelerations,
+    sharpTurns: this.currentTrip.sharpTurns,
+  };
+
+const scores = ScoringEngine.calculateScores(tripData);
+const xpEarned = XpEngine.calculateXp(tripData, scores);
+const badges = BadgesEngine.getBadges(tripData, scores);
+
+  console.log("Trip ended", tripData);
+  console.log("Scores:", scores);
+  console.log("XP Earned:", xpEarned);
+  console.log("Badges:", badges);
+  // 1. Save locally
+  await TripStorage.saveTrip(tripData);
+
+  // 2. Upload to backend (handled next)
+  TripUploader.queueUpload(tripData);
+
+  // Reset
+  this.currentTrip = null;
+  this.stationaryCount = 0;
+}
+
 }

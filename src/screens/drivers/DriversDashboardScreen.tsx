@@ -18,15 +18,24 @@ import {
   currentTrip,
   weeklyStats,
   leaderboard,
+  scores,
 } from '../../data/mockDriverData';
 import { TelemetryManager } from '../../telemetry/TelemetryManager';
+import { TierEngine } from '../../gamification/TierEngine';
+import { ChallengesEngine } from '../../gamification/ChallengesEngine';
+import ScoreMeter from '../../gamification/ScoreMeter';
+import Badge from '../../gamification/Badge';
+import ChallengeCard from '../../gamification/ChallengeCard';
 
 const { width } = Dimensions.get('window');
 
 const DriversDashboardScreen: React.FC = () => {
   const xpProgress =
     (driverProfile.xp / driverProfile.nextLevelXp) * 100;
+const tier = TierEngine.getTier(driverProfile.level);
 
+const weeklyChallenges = ChallengesEngine.getWeeklyChallenges();
+const badges = ["🌱 Eco Hero", "🛡 Safety Star"];
   return (
     <SafeAreaView style={styles.safeArea}>
       <ScrollView
@@ -57,7 +66,38 @@ const DriversDashboardScreen: React.FC = () => {
             </View>
             <Text style={styles.badgeText}>Eco Driver • Tier Gold</Text>
           </Card>
+          {/* Driver Tier */}
+<Card style={{ marginTop: spacing.md }}>
+  <Text style={typography.caption}>Tier</Text>
+  <Text style={[typography.heading2, { color: tier.color, marginTop: spacing.xs }]}>
+    {tier.name}
+  </Text>
+</Card>
+
         </View>
+<View style={{ marginTop: spacing.lg }}>
+  <Text style={typography.heading2}>Driving Scores</Text>
+
+  <ScoreMeter label="Eco" score={scores.eco} />
+  <ScoreMeter label="Safety" score={scores.safety} />
+  <ScoreMeter label="Aggression (lower is better)" score={100 - scores.aggression} />
+</View>
+<View style={{ marginTop: spacing.lg }}>
+  <Text style={typography.heading2}>Badges</Text>
+
+  <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginTop: spacing.sm }}>
+    {badges.map((b, i) => (
+      <Badge key={i} label={b} />
+    ))}
+  </ScrollView>
+</View>
+<View style={{ marginTop: spacing.lg }}>
+  <Text style={typography.heading2}>Weekly Challenges</Text>
+
+  {weeklyChallenges.map((ch) => (
+    <ChallengeCard key={ch.id} challenge={ch} />
+  ))}
+</View>
 
         {/* Key scores */}
         <View style={styles.section}>
@@ -183,14 +223,7 @@ const DriversDashboardScreen: React.FC = () => {
           </Card>
 
         </View>
-        {/*dummy button */}
-        <Button
-  title="Print Telemetry Packet"
-  onPress={() => {
-    const packet = TelemetryManager.getTelemetryPacket();
-    console.log(JSON.stringify(packet, null, 2));
-  }}
-/>
+       
 
         {/* Spacer */}
         <View style={{ height: spacing.xxl }} />

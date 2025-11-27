@@ -1,6 +1,7 @@
 import { api } from "../api/axiosInstance";
 import { endpoints } from "../api/endpoints";
 import { TripSnapshot, WeeklyStats } from "../models/Trip";
+import { TripSessionData } from "../trip/TripSession";
 
 export const tripService = {
     async getLatestTrip(): Promise<TripSnapshot> {
@@ -16,4 +17,10 @@ export const tripService = {
     const response = await api.get(endpoints.trip.history);
     return response.data;
   },
+
+  async uploadTrip(tripData: TripSessionData) {
+  const response = await api.post('/trip/upload', tripData);
+  return response.data;
+}
+
 };
