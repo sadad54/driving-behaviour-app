@@ -26,6 +26,7 @@ import { ChallengesEngine } from '../../gamification/ChallengesEngine';
 import ScoreMeter from '../../gamification/ScoreMeter';
 import Badge from '../../gamification/Badge';
 import ChallengeCard from '../../gamification/ChallengeCard';
+import AnimatedScreen from '../../components/animations/AnimatedScreen';
 
 const { width } = Dimensions.get('window');
 
@@ -37,12 +38,8 @@ const tier = TierEngine.getTier(driverProfile.level);
 const weeklyChallenges = ChallengesEngine.getWeeklyChallenges();
 const badges = ["🌱 Eco Hero", "🛡 Safety Star"];
   return (
-    <SafeAreaView style={styles.safeArea}>
-      <ScrollView
-        style={styles.container}
-        contentContainerStyle={styles.contentContainer}
-        showsVerticalScrollIndicator={false}
-      >
+    <AnimatedScreen title="Driver Dashboard">
+  <View style={styles.container}>
         {/* “Hero” section */}
         <View style={styles.hero}>
           <Text style={styles.appTitle}>DriveSense</Text>
@@ -229,8 +226,8 @@ const badges = ["🌱 Eco Hero", "🛡 Safety Star"];
         <View style={{ height: spacing.xxl }} />
 
 
-      </ScrollView>
-    </SafeAreaView>
+      </View>
+    </AnimatedScreen>
   );
 };
 

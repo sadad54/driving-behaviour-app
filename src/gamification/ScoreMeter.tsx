@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import React, { useEffect, useRef } from 'react';
+import { View, Text, StyleSheet, Animated } from 'react-native';
 import { colors } from '../theme/colors';
 import { spacing } from '../theme/spacing';
 import { typography } from '../theme/typography';
@@ -10,13 +10,27 @@ interface ScoreMeterProps {
 }
 
 export default function ScoreMeter({ label, score }: ScoreMeterProps) {
+  const animatedWidth = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    Animated.timing(animatedWidth, {
+      toValue: score,
+      duration: 600,       // smooth duration
+      useNativeDriver: false, 
+    }).start();
+  }, [score]);
+
+  const widthInterpolated = animatedWidth.interpolate({
+    inputRange: [0, 100],
+    outputRange: ["0%", "100%"],
+  });
 
   return (
     <View style={styles.container}>
       <Text style={styles.label}>{label}</Text>
 
       <View style={styles.barBackground}>
-        <View style={[styles.barFill, { width: `${score}%` }]} />
+        <Animated.View style={[styles.barFill, { width: widthInterpolated }]} />
       </View>
 
       <Text style={styles.score}>{score}</Text>
